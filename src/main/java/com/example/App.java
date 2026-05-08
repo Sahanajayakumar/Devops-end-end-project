@@ -15,26 +15,35 @@ public class App {
     }
 
     @GetMapping("/")
-    public String home() {
-        return "<h1>Welcome to the DevOps Calculator!</h1>" +
-               "<p>Use the following endpoints:</p>" +
-               "<ul>" +
-               "<li>/add?a=10&b=5</li>" +
-               "<li>/sub?a=10&b=5</li>" +
-               "<li>/mul?a=10&b=5</li>" +
-               "<li>/div?a=10&b=5</li>" +
-               "</ul>";
+    public String home(@RequestParam(required = false) String result) {
+        return "<html><body style='text-align:center; font-family:sans-serif; padding-top:50px;'>" +
+               "<h1>DevOps Calculator</h1>" +
+               "<form action='/calculate' method='get' style='display:inline-block; border:1px solid #ccc; padding:20px; border-radius:10px;'>" +
+               "  <input type='number' name='a' placeholder='First Number' required style='padding:10px; margin:5px;'><br>" +
+               "  <input type='number' name='b' placeholder='Second Number' required style='padding:10px; margin:5px;'><br><br>" +
+               "  <button name='op' value='add' style='padding:10px 20px; cursor:pointer;'>Add (+)</button> " +
+               "  <button name='op' value='sub' style='padding:10px 20px; cursor:pointer;'>Sub (-)</button> " +
+               "  <button name='op' value='mul' style='padding:10px 20px; cursor:pointer;'>Mul (*)</button> " +
+               "  <button name='op' value='div' style='padding:10px 20px; cursor:pointer;'>Div (/)</button>" +
+               "</form>" +
+               (result != null ? "<h2 style='color:blue;'>Result: " + result + "</h2>" : "") +
+               "<br><br><p>Current Build: <b>Calculator v2.0</b></p>" +
+               "</body></html>";
     }
 
-    @GetMapping("/add")
-    public String add(@RequestParam int a, @RequestParam int b) {
-        return String.format("%d + %d = %d", a, b, (a + b));
+    @GetMapping("/calculate")
+    public String calculate(@RequestParam int a, @RequestParam int b, @RequestParam String op) {
+        String res;
+        if (op.equals("add")) res = String.valueOf(a + b);
+        else if (op.equals("sub")) res = String.valueOf(a - b);
+        else if (op.equals("mul")) res = String.valueOf(a * b);
+        else if (op.equals("div")) res = (b != 0) ? String.format("%.2f", (double)a / b) : "Error: Div by Zero";
+        else res = "Invalid Operation";
+        
+        // Redirect back to home with the result
+        return home(res);
     }
-
-    @GetMapping("/sub")
-    public String sub(@RequestParam int a, @RequestParam int b) {
-        return String.format("%d - %d = %d", a, b, (a - b));
-    }
+}    }
 
     @GetMapping("/mul")
     public String mul(@RequestParam int a, @RequestParam int b) {
