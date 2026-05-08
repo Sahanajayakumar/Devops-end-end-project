@@ -21,13 +21,12 @@ public class App {
                "<form action='/calculate' method='get' style='display:inline-block; border:1px solid #ccc; padding:20px; border-radius:10px;'>" +
                "  <input type='number' name='a' placeholder='First Number' required style='padding:10px; margin:5px;'><br>" +
                "  <input type='number' name='b' placeholder='Second Number' required style='padding:10px; margin:5px;'><br><br>" +
-               "  <button name='op' value='add' style='padding:10px 20px; cursor:pointer;'>Add (+)</button> " +
-               "  <button name='op' value='sub' style='padding:10px 20px; cursor:pointer;'>Sub (-)</button> " +
-               "  <button name='op' value='mul' style='padding:10px 20px; cursor:pointer;'>Mul (*)</button> " +
-               "  <button name='op' value='div' style='padding:10px 20px; cursor:pointer;'>Div (/)</button>" +
+               "  <button name='op' value='add'>Add (+)</button> " +
+               "  <button name='op' value='sub'>Sub (-)</button> " +
+               "  <button name='op' value='mul'>Mul (*)</button> " +
+               "  <button name='op' value='div'>Div (/)</button>" +
                "</form>" +
                (result != null ? "<h2 style='color:blue;'>Result: " + result + "</h2>" : "") +
-               "<br><br><p>Current Build: <b>Calculator v2.0</b></p>" +
                "</body></html>";
     }
 
@@ -35,6 +34,13 @@ public class App {
     public String calculate(@RequestParam int a, @RequestParam int b, @RequestParam String op) {
         String res;
         if (op.equals("add")) res = String.valueOf(a + b);
+        else if (op.equals("sub")) res = String.valueOf(a - b);
+        else if (op.equals("mul")) res = String.valueOf(a * b);
+        else if (op.equals("div")) res = (b != 0) ? String.format("%.2f", (double)a / b) : "Error: Div by Zero";
+        else res = "Invalid Operation";
+        return home(res);
+    }
+}        if (op.equals("add")) res = String.valueOf(a + b);
         else if (op.equals("sub")) res = String.valueOf(a - b);
         else if (op.equals("mul")) res = String.valueOf(a * b);
         else if (op.equals("div")) res = (b != 0) ? String.format("%.2f", (double)a / b) : "Error: Div by Zero";
