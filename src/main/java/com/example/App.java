@@ -11,7 +11,7 @@ public class App {
 
     @GetMapping("/")
     public String home() {
-        return "Hello Microdegree folkss!!";
+        return "DevOps CI/CD Pipeline Running Successfully";
     }
 
     public static void main(String[] args) {
