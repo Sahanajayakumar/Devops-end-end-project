@@ -18,6 +18,13 @@ pipeline {
             }
         }
 
+        stage('Add to grp') {
+
+            steps {
+                sh 'newgrp docker'
+            }
+        }
+
         stage('Docker Build') {
 
             steps {
